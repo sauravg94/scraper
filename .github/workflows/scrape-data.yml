@@ -18,7 +18,9 @@ jobs:
 
       - name: Install packages
         run: |
-          Rscript -e 'install.packages(c("rvest", "tibble", "dplyr", "readr"))'
+          R -e 'install.packages("tidyverse")'
+          R -e 'install.packages("rvest")'
+          R -e 'install.packages("tibble")'
 
       - name: Run scraper script
         run: |
