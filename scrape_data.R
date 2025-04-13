@@ -1,20 +1,21 @@
-# scrape_data.R
+# R/scrape.R
 
 library(rvest)
-library(tibble)
-library(dplyr)
-library(readr)
+library(tidyverse)
+library(lubridate)
 
-# Example: Scrape titles from rvest page
 url <- "https://rvest.tidyverse.org/articles/starwars.html"
 page <- read_html(url)
-titles <- page %>% html_nodes("h2") %>% html_text()
+titles <- page %>% html_nodes("#main h2") %>% html_text() %>% str_trim()
 
 data <- tibble(title = titles)
 
-# Create timestamped filename
+# Timestamped file name
 timestamp <- format(Sys.time(), "%Y-%m-%d_%H-%M-%S")
-filename <- paste0("output_", timestamp, ".csv")
+file_name <- paste0("output_", timestamp, ".csv")
 
-# Save CSV
-write_csv(data,filename)
+# Ensure output dir exists
+if (!dir.exists("output")) dir.create("output")
+
+# Save
+write_csv(data, file = file.path("output", file_name))
